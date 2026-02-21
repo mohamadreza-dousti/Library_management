@@ -2,7 +2,7 @@ import sqlite3
 
 class BookDB:
     def __init__(self):
-        self._db_name = 'Database\Book_database.db'
+        self._db_name = 'Database\Library_database.db'
         self.con = sqlite3.connect(self._db_name)
         self.cursor = self.con.cursor()
 
