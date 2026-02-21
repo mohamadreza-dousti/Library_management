@@ -50,11 +50,37 @@ class BookMnagement():
         btn.configure(state='disabled')
         
     
-    def ShowBooks(self):
+    def ShowBooks(self, val, frame):
+        for widget in frame.winfo_children():
+            widget.destroy()
+            
+        ansewr = []
+
+        scroll_frame = ctk.CTkScrollableFrame(frame, width=250, height=30)
+        scroll_frame.pack(pady=15)
+        scroll_frame.grid_columnconfigure(0, weight=1)
+        scroll_frame.grid_columnconfigure(1, weight=1)
+        scroll_frame.grid_columnconfigure(2, weight=1)
+
+        self.val = val.get()
         books = BookDB()
-        result = books.show_books()
+        if self.val == '1':
+            ansewr = books.show_books1()
+        elif self.val == '0':
+            ansewr = books.show_books0()
+        else:
+            ansewr = books.show_books()
         books.close()
-        return result
+
+        i=0
+        for book in ansewr:
+            book_title = ctk.CTkLabel(scroll_frame, fg_color='black', text=f'title:{book[0]}')
+            book_title.grid(row=i, column=0, pady=5)
+            book_author = ctk.CTkLabel(scroll_frame, fg_color='black', text=f'author:{book[1]}')
+            book_author.grid(row=i, column=1)
+            book_status = ctk.CTkLabel(scroll_frame, fg_color='black', text=f'status:{book[2]}')
+            book_status.grid(row=i, column=2)
+            i += 1
 
 
     def SearchBook(self, name, val, frame):
