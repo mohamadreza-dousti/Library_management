@@ -12,6 +12,9 @@ class Admin:
         remove_admin = ctk.CTkButton(self.main_area, text='Remove Admin', command=self.remove_admin)
         remove_admin.pack(pady=5)
 
+        exit = ctk.CTkButton(self.main_area, text='Exit', fg_color='blue', text_color='black', command=self.exit, corner_radius=10)
+        exit.pack(pady=20)
+
     def add_admin(self):
         add = amng()
     
@@ -69,3 +72,7 @@ class Admin:
         for widget in self.main_area.winfo_children():
             widget.destroy()
         self.make_window_admin()
+
+    def exit(self):
+        for widget in self.main_area.winfo_children():
+            widget.destroy()
