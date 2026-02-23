@@ -21,6 +21,9 @@ class Book:
         show = ctk.CTkButton(self.tab1, text='4.Show books', text_color='gray', command=self.show_books)
         show.pack(pady=10)
 
+        exit = ctk.CTkButton(self.tab1, text='Exit', fg_color='blue', text_color='black', command=self.exit, corner_radius=10)
+        exit.pack(pady=20)
+
     def add_book(self):
         add = bmng()
     
@@ -121,3 +124,7 @@ class Book:
         for widget in self.tab1.winfo_children():
             widget.destroy()
         self.make_window_book()
+
+    def exit(self):
+        for widget in self.tab1.winfo_children():
+            widget.destroy()
