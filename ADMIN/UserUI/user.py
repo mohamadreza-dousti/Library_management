@@ -20,6 +20,9 @@ class User:
 
         show = ctk.CTkButton(self.tab2, text='4.Show users', text_color='gray', command=self.show_users)
         show.pack(pady=10)
+
+        exit = ctk.CTkButton(self.tab2, text='Exit', fg_color='blue', text_color='black', command=self.exit, corner_radius=10)
+        exit.pack(pady=20)
     
     def add_user(self):
         add = umng()
@@ -133,3 +136,7 @@ class User:
         for widget in self.tab2.winfo_children():
             widget.destroy()
         self.make_window_user()
+
+    def exit(self):
+        for widget in self.tab2.winfo_children():
+            widget.destroy()
