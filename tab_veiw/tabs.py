@@ -49,6 +49,9 @@ class Logs(ctk.CTk):
 
         login = ctk.CTkButton(self.main_area, text='login', fg_color='white', text_color='black', command=self.manager_widgets)
         login.pack(pady=15, fill='both')
+
+        exit = ctk.CTkButton(self.main_area, text='Exit', fg_color='blue', text_color='black', command=self.exit, corner_radius=10)
+        exit.pack(pady=20)
     
     def LogAdmin(self):
         for widget in self.main_area.winfo_children():
@@ -65,6 +68,9 @@ class Logs(ctk.CTk):
 
         login = ctk.CTkButton(self.main_area, text='login', fg_color='white', text_color='black', command=self.admin_widgets)
         login.pack(pady = 15, fill='both')
+
+        exit = ctk.CTkButton(self.main_area, text='Exit', fg_color='blue', text_color='black', command=self.exit, corner_radius=10)
+        exit.pack(pady=20)
     
     def LogUser(self):
         for widget in self.main_area.winfo_children():
@@ -72,6 +78,9 @@ class Logs(ctk.CTk):
         
         self.lable = ctk.CTkLabel(self.main_area, text='USER')
         self.lable.pack()
+
+        exit = ctk.CTkButton(self.main_area, text='Exit', fg_color='blue', text_color='black', command=self.exit, corner_radius=10)
+        exit.pack(pady=20)
 
     def manager_widgets(self):
         username = self.user_entry_manager.get()
@@ -125,3 +134,7 @@ class Logs(ctk.CTk):
         else:
             wrong = ctk.CTkLabel(self.main_area, text='password or username is incorrect')
             wrong.pack()
+
+    def exit(self):
+        for widget in self.main_area.winfo_children():
+            widget.destroy()
