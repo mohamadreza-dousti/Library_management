@@ -121,7 +121,7 @@ class User:
             full_name = ctk.CTkLabel(scroll_frame, fg_color='white', text_color='black', text=f'fullname : {user[0]} {user[1]}')
             full_name.grid(row=i, column=0, pady=1)
             i += 1
-            date_of_membership = ctk.CTkLabel(scroll_frame, fg_color='white', text_color='black', text=f'membership date : {user[5]}\{user[7]}\{user[6]}')
+            date_of_membership = ctk.CTkLabel(scroll_frame, fg_color='white', text_color='black', text=f'membership date : {user[6]}\{user[8]}\{user[7]}')
             date_of_membership.grid(row=i, column=0)
             i += 1
             end = ctk.CTkLabel(scroll_frame, fg_color='black', text_color='black', text=' ', width=280)
