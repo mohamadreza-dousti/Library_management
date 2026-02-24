@@ -2,6 +2,7 @@ import customtkinter as ctk
 from ADMIN.BookUI.book import Book
 from ADMIN.UserUI.user import User
 from MANAGER.AdminUI.admin import Admin
+from USER.ProfileUI.profile import Profile
 from Database.Admin_database import AdminDB
 from Database.User_database import UserDB
 from Database.Manager_database import ManagerDB
@@ -79,6 +80,15 @@ class Logs(ctk.CTk):
         self.lable = ctk.CTkLabel(self.main_area, text='USER')
         self.lable.pack()
 
+        self.user_entry_user = ctk.CTkEntry(self.main_area, placeholder_text='user name')
+        self.user_entry_user.pack(pady = 5, fill='both')
+
+        self.pass_entry_user = ctk.CTkEntry(self.main_area, placeholder_text='password')
+        self.pass_entry_user.pack(pady = 5, fill='both')
+
+        login = ctk.CTkButton(self.main_area, text='login', fg_color='white', text_color='black', command=self.user_widgets)
+        login.pack(pady = 15, fill='both')
+
         exit = ctk.CTkButton(self.main_area, text='Exit', fg_color='blue', text_color='black', command=self.exit, corner_radius=10)
         exit.pack(pady=20)
 
@@ -134,6 +144,28 @@ class Logs(ctk.CTk):
         else:
             wrong = ctk.CTkLabel(self.main_area, text='password or username is incorrect')
             wrong.pack()
+
+    def user_widgets(self):
+        username = self.user_entry_user.get()
+        password = self.pass_entry_user.get()
+        user_db = UserDB()
+        user_db.create_table()
+        pas = user_db.get_pass_user(username)
+        user_db.close()
+        if pas:
+            if pas[0] == password:
+                for widget in self.main_area.winfo_children():
+                    widget.destroy()
+                
+                profile = Profile(self.main_area, username)
+                profile.make_window_profile()
+            else:
+                wrong = ctk.CTkLabel(self.main_area, text='password or username is incorrect')
+                wrong.pack()
+        else:
+            wrong = ctk.CTkLabel(self.main_area, text='password or username is incorrect')
+            wrong.pack()
+                
 
     def exit(self):
         for widget in self.main_area.winfo_children():
