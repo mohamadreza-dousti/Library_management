@@ -2,7 +2,7 @@ import sqlite3
 
 class UserDB:
     def __init__(self):
-        self._db_name = 'Database\Library_database.db'
+        self._db_name = 'Database\\Library_database.db'
         self.con = sqlite3.connect(self._db_name)
         self.cursor = self.con.cursor()
 
@@ -26,7 +26,7 @@ class UserDB:
     def add_user(self, name, fname, age, user_name, password, gender, year, mont, day, expire_year):
         self.cursor.execute('''
         INSERT INTO users (name, f_name, age, user_name, password, gender, year, month, day, expire_year)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ''', (name, fname, age, user_name, password, gender, year, mont, day, expire_year))
         self.con.commit()
 
@@ -42,6 +42,32 @@ class UserDB:
     def get_pass_user(self, user_name):
         self.cursor.execute('SELECT password FROM users WHERE user_name = ?', (user_name,))
         return self.cursor.fetchone()
+
+    def get_name(self, user_name):
+        self.cursor.execute('SELECT name FROM users WHERE user_name = ?', (user_name,))
+        return self.cursor.fetchone()
+
+    def get_fname(self, user_name):
+        self.cursor.execute('SELECT f_name FROM users WHERE user_name = ?', (user_name,))
+        return self.cursor.fetchone()
+
+    def get_age(self, user_name):
+        self.cursor.execute('SELECT age FROM users WHERE user_name = ?', (user_name,))
+        return self.cursor.fetchone()
+    
+    def get_gender(self, user_name):
+        self.cursor.execute('SELECT gender FROM users WHERE user_name = ?', (user_name,))
+        return self.cursor.fetchone()
+    
+    def get_membership_date(self, user_name):
+        self.cursor.execute('SELECT year, month, day FROM users WHERE user_name = ?', (user_name,))
+        year, month, day = self.cursor.fetchone()
+        return year, month, day
+    
+    def get_expire_date(self, user_name):
+        self.cursor.execute('SELECT expire_year, month, day FROM users WHERE user_name = ?', (user_name,))
+        year, month, day = self.cursor.fetchone()
+        return year, month, day
     
     def close(self):
         self.con.close()
