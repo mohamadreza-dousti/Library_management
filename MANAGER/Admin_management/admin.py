@@ -9,14 +9,11 @@ class Admin:
         self.user_code = f'a-{code_meli}'
         self.password = f'a{code_meli}'
         self.gender = gender
-        self.membership_date = datetime.datetime.now()
-        self.year = self.membership_date.year
-        self.month = self.membership_date.month
-        self.day = self.membership_date.day
+        self.code = code_meli
     
     def create_admin(self):
         add = AdminDB()
-        add.register_admin(self.name, self.fname, self.age, self.user_code, self.password, self.gender, self.year, self.month, self.day)
+        add.register_admin(self.name, self.fname, self.gender, self.age, self.code, self.user_code, self.password)
         add.close()
     
 class AdminManagement:
@@ -36,9 +33,9 @@ class AdminManagement:
         btn.configure(state='disabled')
 
 
-    def RemoveAdmin(self, user_name, btn):
-        self.user_name = user_name.get()
+    def RemoveAdmin(self, code_meli, btn):
+        self.code_meli = code_meli.get()
         remove = AdminDB()
-        remove.remove_admin(self.user_name)
+        remove.remove_admin(self.code_meli)
         remove.close()
         btn.configure(state='disabled')
