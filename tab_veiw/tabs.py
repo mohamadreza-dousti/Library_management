@@ -2,10 +2,13 @@ import customtkinter as ctk
 from ADMIN.BookUI.book import Book
 from ADMIN.UserUI.user import User
 from MANAGER.AdminUI.admin import Admin
+from MANAGER.PostUI.post import Post
 from USER.ProfileUI.profile import Profile
+from POSTER.PostUI.post import PostProfile
 from Database.Admin_database import AdminDB
 from Database.User_database import UserDB
 from Database.Manager_database import ManagerDB
+from Database.Post_database import PostDB
 import threading as trd
 
 class Logs(ctk.CTk):
@@ -31,6 +34,9 @@ class Logs(ctk.CTk):
 
         self.user_btn = ctk.CTkButton(self.slidebar, text='User', command=self.LogUser)
         self.user_btn.pack(pady=5)
+
+        self.post_btn = ctk.CTkButton(self.slidebar, text='Post', command=self.LogPost)
+        self.post_btn.pack(pady=5)
 
         self.main_area = ctk.CTkFrame(self)
         self.main_area.pack(side='right', expand='True', fill='both')
@@ -92,6 +98,26 @@ class Logs(ctk.CTk):
         exit = ctk.CTkButton(self.main_area, text='Exit', fg_color='blue', text_color='black', command=self.exit, corner_radius=10)
         exit.pack(pady=20)
 
+    def LogPost(self):
+        for widget in self.main_area.winfo_children():
+            widget.destroy()
+    
+        self.lable = ctk.CTkLabel(self.main_area, text='POST')
+        self.lable.pack()
+    
+        self.user_entry_post = ctk.CTkEntry(self.main_area, placeholder_text='user name')
+        self.user_entry_post.pack(pady = 5, fill='both')
+
+        self.pass_entry_post = ctk.CTkEntry(self.main_area, placeholder_text='password')
+        self.pass_entry_post.pack(pady = 5, fill='both')
+
+        login = ctk.CTkButton(self.main_area, text='login', fg_color='white', text_color='black', command=self.post_widgets)
+        login.pack(pady = 15, fill='both')
+
+        exit = ctk.CTkButton(self.main_area, text='Exit', fg_color='blue', text_color='black', command=self.exit, corner_radius=10)
+        exit.pack(pady=20)
+
+
     def manager_widgets(self):
         username = self.user_entry_manager.get()
         password = self.pass_entry_manager.get()
@@ -103,9 +129,19 @@ class Logs(ctk.CTk):
             if pas[0] == password:
                 for widget in self.main_area.winfo_children():
                     widget.destroy()
+                self.tabview = ctk.CTkTabview(self.main_area, width=380, height=230,
+                                        corner_radius=15)
+                self.tabview.pack(padx=10, pady=10, fill='both',
+                            expand=True)
 
-                admin_widgets = Admin(self.main_area)
-                admin_widgets.make_window_admin()
+                tab1 = self.tabview.add('Admins')
+                tab2 = self.tabview.add('Posts')
+                admin_widgets = Admin(tab1)
+                post_widgets = Post(tab2)
+                book_trd = trd.Thread(target=admin_widgets.make_window_admin(), name='book-widgets')
+                user_trd = trd.Thread(target=post_widgets.make_window_post(), name='user-widgets')
+                book_trd.start()
+                user_trd.start()
             else:
                 wrong = ctk.CTkLabel(self.main_area, text='password or username is incorrect')
                 wrong.pack()
@@ -129,10 +165,10 @@ class Logs(ctk.CTk):
                 self.tabview.pack(padx=10, pady=10, fill='both',
                             expand=True)
 
-                self.tab1 = self.tabview.add('Books')
-                self.tab2 = self.tabview.add('Users')
-                book_widgets = Book(self.tab1)
-                user_widgets = User(self.tab2)
+                tab1 = self.tabview.add('Books')
+                tab2 = self.tabview.add('Users')
+                book_widgets = Book(tab1)
+                user_widgets = User(tab2)
                 book_trd = trd.Thread(target=book_widgets.make_window_book(), name='book-widgets')
                 user_trd = trd.Thread(target=user_widgets.make_window_user(), name='user-widgets')
                 book_trd.start()
@@ -159,6 +195,27 @@ class Logs(ctk.CTk):
                 
                 profile = Profile(self.main_area, username)
                 profile.make_window_profile()
+            else:
+                wrong = ctk.CTkLabel(self.main_area, text='password or username is incorrect')
+                wrong.pack()
+        else:
+            wrong = ctk.CTkLabel(self.main_area, text='password or username is incorrect')
+            wrong.pack()
+
+    def post_widgets(self):
+        username = self.user_entry_post.get()
+        password = self.pass_entry_post.get()
+        post_db = PostDB()
+        post_db.create_table()
+        pas = post_db.get_pass_post(username)
+        post_db.close()
+        if pas:
+            if pas[0] == password:
+                for widget in self.main_area.winfo_children():
+                    widget.destroy()
+                
+                profile = PostProfile(self.main_area, username)
+                profile.make_window_post_profile()
             else:
                 wrong = ctk.CTkLabel(self.main_area, text='password or username is incorrect')
                 wrong.pack()
