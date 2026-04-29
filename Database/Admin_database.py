@@ -11,27 +11,25 @@ class AdminDB:
             CREATE TABLE IF NOT EXISTS admins (
                 name TEXT,
                 f_name TEXT,
-                age INTEGER,
-                user_name TEXT,
-                password TEXT,
                 gender TEXT,
-                year INTEGER,
-                month INTEGER,
-                day INTEGER
+                age INTEGER,
+                code_meli TEXT,
+                user_name TEXT,
+                password TEXT
             )
         ''')
         self.con.commit()
 
-    def register_admin(self, name, fname, age, user_name, password, gender, year, mont, day):
+    def register_admin(self, name, fname, gender, age, code_meli, user_name, password):
         self.cursor.execute('''
-        INSERT INTO admins (name, f_name, age, user_name, password, gender, year, month, day)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-        ''', (name, fname, age, user_name, password, gender, year, mont, day))
+        INSERT INTO admins (name, f_name, gender, age, code_meli, user_name, password)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+        ''', (name, fname, gender, age, code_meli, user_name, password))
         self.con.commit()
 
     
-    def remove_admin(self, user_name):
-        self.cursor.execute('DELETE FROM admins WHERE user_name = ?', (user_name,))
+    def remove_admin(self, code_meli):
+        self.cursor.execute('DELETE FROM admins WHERE code_meli = ?', (code_meli,))
         self.con.commit()
     
     def get_pass_admin(self, user_name):
