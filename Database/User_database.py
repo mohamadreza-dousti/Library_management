@@ -12,27 +12,32 @@ class UserDB:
                 name TEXT,
                 f_name TEXT,
                 age INTEGER,
+                gender TEXT,
+                code_meli TEXT,
+                address TEXT,
                 user_name TEXT,
                 password TEXT,
-                gender TEXT,
                 year INTEGER,
                 month INTEGER,
                 day INTEGER, 
-                expire_year INTEGER
+                expire_year INTEGER,
+                book_count INTEGER,
+                chair BOOLIAN DEFAULT 0,
+                phone TEXT
             )
         ''')
         self.con.commit()
 
-    def add_user(self, name, fname, age, user_name, password, gender, year, mont, day, expire_year):
+    def add_user(self, name, fname, age, gender, code_meli, address, user_name, password, year, month, day, expire_year, book_count, phone):
         self.cursor.execute('''
-        INSERT INTO users (name, f_name, age, user_name, password, gender, year, month, day, expire_year)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        ''', (name, fname, age, user_name, password, gender, year, mont, day, expire_year))
+        INSERT INTO users (name, f_name, age, gender, code_meli, address, user_name, password, year, month, day, expire_year, book_count, phone)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (name, fname, age, gender, code_meli, address, user_name, password, year, month, day, expire_year, book_count, phone))
         self.con.commit()
 
     
-    def remove_user(self, user_name):
-        self.cursor.execute('DELETE FROM users WHERE user_name = ?', (user_name,))
+    def remove_user(self, code_meli):
+        self.cursor.execute('DELETE FROM users WHERE code_meli = ?', (code_meli,))
         self.con.commit()
     
     def show_users(self):
@@ -54,9 +59,21 @@ class UserDB:
     def get_age(self, user_name):
         self.cursor.execute('SELECT age FROM users WHERE user_name = ?', (user_name,))
         return self.cursor.fetchone()
+
+    def get_phone(self, user_name):
+        self.cursor.execute('SELECT phone FROM users WHERE user_name = ?', (user_name,))
+        return self.cursor.fetchone()
     
     def get_gender(self, user_name):
         self.cursor.execute('SELECT gender FROM users WHERE user_name = ?', (user_name,))
+        return self.cursor.fetchone()
+
+    def get_id(self, user_name):
+        self.cursor.execute('SELECT code_meli FROM users WHERE user_name = ?', (user_name,))
+        return self.cursor.fetchone()
+    
+    def get_address(self, user_name):
+        self.cursor.execute('SELECT address FROM users WHERE user_name = ?', (user_name,))
         return self.cursor.fetchone()
     
     def get_membership_date(self, user_name):
