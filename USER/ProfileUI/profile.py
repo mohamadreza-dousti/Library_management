@@ -1,5 +1,6 @@
 import customtkinter as ctk
 from USER.Profile_management.profile import ProfileManagement as pmng
+from USER.reserve.book import reserveBook as rb
 
 class Profile:
     def __init__(self, main_area, username):
@@ -54,9 +55,37 @@ class Profile:
         expire_date_val = ctk.CTkLabel(self.main_area, text=expire_date_value, bg_color='gray', text_color='black', corner_radius=2, width=200)
         expire_date_val.grid(row=5, column=1, pady=5)
 
-        exit = ctk.CTkButton(self.main_area, text='Exit', fg_color='blue', text_color='black', command=self.exit, corner_radius=10)
-        exit.grid(row=6, column=0, columnspan=2, pady=40)
+        reserve_book = ctk.CTkButton(self.main_area, text='reserve book', fg_color='blue', text_color='white', corner_radius=10, command=self.search)
+        reserve_book.grid(row=6, column=0, columnspan=2, pady=10)
+
+        exit = ctk.CTkButton(self.main_area, text='Exit', fg_color='red', text_color='black', command=self.exit, corner_radius=10)
+        exit.grid(row=8, column=0, columnspan=2, pady=40)
+
 
     def exit(self):
         for widget in self.main_area.winfo_children():
             widget.destroy()
+    
+    def search(self):
+        search = rb(self.username)
+        self.exit()
+
+        title = ctk.CTkEntry(self.main_area, placeholder_text='search book')
+        title.pack(pady=2)
+
+        search_btn_avalable = ctk.CTkButton(self.main_area, text='search', command=lambda:search.search_book_user(title, scroll_frame))
+        search_btn_avalable.pack()
+
+        scroll_frame = ctk.CTkScrollableFrame(self.main_area, height=300, width=300)
+        scroll_frame.pack(pady=5)
+        scroll_frame.grid_columnconfigure(0, weight=1)
+        scroll_frame.grid_columnconfigure(1, weight=1)
+        scroll_frame.grid_columnconfigure(2, weight=1)
+
+        exit_search = ctk.CTkButton(self.main_area, text='Exit', fg_color='red', text_color='black', command=self.exit_search, corner_radius=10)
+        exit_search.pack(pady=40)
+    
+    def exit_search(self):
+        for widget in self.main_area.winfo_children():
+            widget.destroy()
+        self.make_window_profile()
