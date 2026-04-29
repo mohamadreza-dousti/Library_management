@@ -31,6 +31,12 @@ class ProfileManagement:
         getGender.close()
         return gender
 
+    def get_id(self):
+        GetId = UserDB()
+        code_meli = GetId.get_id(self.username)
+        GetId.close()
+        return code_meli
+
     def GetMembershipDate(self):
         getMembershipDate = UserDB()
         year, month, day = getMembershipDate.get_membership_date(self.username)
@@ -42,3 +48,4 @@ class ProfileManagement:
         year, month, day = getExpireDate.get_expire_date(self.username)
         getExpireDate.close()
         return f'{year}\\{month}\\{day}'
+
