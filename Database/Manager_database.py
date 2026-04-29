@@ -9,6 +9,11 @@ class ManagerDB:
     def create_table(self):
         self.cursor.execute('''
             CREATE TABLE IF NOT EXISTS manager (
+                name TEXT,
+                fname TEXT,
+                age INTEGER,
+                gender TEXT,
+                code_meli TEXT,
                 user_name TEXT,
                 password TEXT
             )
