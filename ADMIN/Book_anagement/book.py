@@ -1,26 +1,19 @@
-from Database.Book_database import BookDB
+from Database.Book_database import BookDB, PostBookDB, TrustDB, OnlineBookDB
+from Database.User_database import UserDB
 import customtkinter as ctk
 import re
+import datetime
 
 class Book:
-    total_books = 0
-    def __init__(self, name, author=None, status=None):
+    def __init__(self, name, author, id):
         self.name = name
         self.author = author
-        self.status = status
-    
-    @classmethod
-    def AddTotalBooks(cls):
-        cls.total_books += 1
-    
-    @classmethod
-    def RemoveTotalBooks(cls):
-        cls.total_books -= 1
+        self.id = id
 
-    @classmethod
-    def getTotalBooks(cls):
-        return cls.total_books
-
+    def create_book(self):
+        add = BookDB()
+        add.add_book(self.name, self.author, self.id)
+        add.close()
     
 class BookMnagement():
     def __init__(self):
@@ -28,25 +21,20 @@ class BookMnagement():
         self.db.create_table()
         self.db.close
 
-    def AddBook(self, name, author, status, btn):
+    def AddBook(self, name, author, id, btn):
         self.name = name.get()
         self.author = author.get()
-        self.status = status.get()
-        book = Book(self.name, self.author, self.status)
-        add = BookDB()
-        add.add_book(self.name, self.author, self.status)
-        add.close()
-        book.AddTotalBooks()
+        self.id = id.get()
+        book = Book(self.name, self.author, self.id)
+        book.create_book()
         btn.configure(state='disabled')
 
 
-    def RemoveBook(self, name, btn):
-        self.name = name.get()
+    def RemoveBook(self, id, btn):
+        self.id = id.get()
         remove = BookDB()
-        remove.remove_book(self.name)
+        remove.remove_book(self.id)
         remove.close()
-        book = Book(self.name)
-        book.RemoveTotalBooks()
         btn.configure(state='disabled')
         
     
@@ -83,27 +71,21 @@ class BookMnagement():
             i += 1
 
 
-    def SearchBook(self, name, val, frame):
+    def SearchBook(self, name, frame):
         for widget in frame.winfo_children():
             widget.destroy()
 
         result= []
         self.name = name.get()
-        self.val = val.get()
         books = BookDB()
-        if self.val == '1':
-            ansewr = books.show_books1()
-        elif self.val == '0':
-            ansewr = books.show_books0()
-        else:
-            ansewr = books.show_books()
+        ansewr = books.show_books()
         books.close()
 
         for book in ansewr:
             if re.match(f'.*{self.name}.*', book[0]):
                 result.append(book)
 
-        scroll_frame = ctk.CTkScrollableFrame(frame, height=10)
+        scroll_frame = ctk.CTkScrollableFrame(frame, width=280)
         scroll_frame.pack(pady=5)
         scroll_frame.grid_columnconfigure(0, weight=1)
         scroll_frame.grid_columnconfigure(1, weight=1)
@@ -118,3 +100,50 @@ class BookMnagement():
             book_status = ctk.CTkLabel(scroll_frame, fg_color='black', text=f'status:{book[2]}')
             book_status.grid(row=i, column=2)
             i += 1
+    
+    def Posted(self, book_id, btn, title, pid, code):
+        posted = OnlineBookDB()
+        date = datetime.datetime.now()
+        year = date.year
+        month = date.month
+        day = date.day
+        self.pid = pid.get()
+        self.title = title.cget('text')
+        self.bid = book_id.cget('text')
+        posted.update_posted(self.bid)
+        posted.close()
+        post_book = PostBookDB()
+        post_book.create_table()
+        post_book.add_book(self.title, self.bid, self.pid, year, month, day, code)
+        post_book.close()
+        btn.configure(state='disabled', text='posted')
+    
+    def update_status(self, id, btn):
+        self.id = id.get()
+        update = BookDB()
+        update.update_status(self.id)
+        update.close()
+        delete = TrustDB()
+        delete.remove_book(self.id)
+        delete.close()
+        btn.configure(state='disabled')
+    
+    def lend_book(self, code, id, btn):
+        get_info = UserDB()
+        date = datetime.datetime.now()
+        month = date.month+1
+        day = date.day
+        self.code = code.get()
+        self.id = id.get()
+        self.user_name = f'u-{self.code}'
+        self.name = get_info.get_name(self.user_name)[0]
+        self.fname = get_info.get_fname(self.user_name)[0]
+        self.phone = get_info.get_phone(self.user_name)[0]
+        get_info.close()
+        lend = TrustDB()
+        lend.create_table()
+        lend.add_book(self.name, self.fname, self.phone, month, day, self.id, self.user_name)
+        lend.close()
+        update = BookDB()
+        update.update_status_0(self.id)
+        btn.configure(state='disabled')
