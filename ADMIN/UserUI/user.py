@@ -50,7 +50,13 @@ class User:
         gender = ctk.CTkOptionMenu(self.tab2, values=values, variable=option_var)
         gender.pack(pady=2)
 
-        save_btn_avalable = ctk.CTkButton(self.tab2, text='save', command=lambda:add.AddUser(name, f_name, age, code, gender, save_btn_avalable))
+        address = ctk.CTkEntry(self.tab2, placeholder_text='address')
+        address.pack(pady=2)
+
+        phone = ctk.CTkEntry(self.tab2, placeholder_text='phone number')
+        phone.pack(pady=2)
+
+        save_btn_avalable = ctk.CTkButton(self.tab2, text='save', command=lambda:add.AddUser(name, f_name, age, gender, code, address, phone, save_btn_avalable))
         save_btn_avalable.pack(pady=5)
 
         bck_btn = ctk.CTkButton(self.tab2, text='back', command=self.back_user,
@@ -66,10 +72,10 @@ class User:
         lable_title = ctk.CTkLabel(self.tab2, text='Remove user')
         lable_title.pack(pady=5)
 
-        user_name = ctk.CTkEntry(self.tab2, placeholder_text='username')
-        user_name.pack(pady=2)
+        code_meli = ctk.CTkEntry(self.tab2, placeholder_text='code meli')
+        code_meli.pack(pady=2)
 
-        remove_btn_avalable = ctk.CTkButton(self.tab2, text='remove', command=lambda:remove.RemoveUser(user_name, remove_btn_avalable))
+        remove_btn_avalable = ctk.CTkButton(self.tab2, text='remove', command=lambda:remove.RemoveUser(code_meli, remove_btn_avalable))
         remove_btn_avalable.pack(pady=5)
 
         bck_btn = ctk.CTkButton(self.tab2, text='back', command=self.back_user,
@@ -86,10 +92,10 @@ class User:
         lable_title = ctk.CTkLabel(self.tab2, text='Search user')
         lable_title.pack(pady=5)
 
-        user_name = ctk.CTkEntry(self.tab2, placeholder_text='username')
-        user_name.pack(pady=2)
+        code_meli = ctk.CTkEntry(self.tab2, placeholder_text='code meli')
+        code_meli.pack(pady=2)
 
-        search_btn_avalable = ctk.CTkButton(self.tab2, text='search', command=lambda:users.SearchUser(user_name, frame))
+        search_btn_avalable = ctk.CTkButton(self.tab2, text='search', command=lambda:users.SearchUser(code_meli, frame))
         search_btn_avalable.pack()
 
         frame = ctk.CTkFrame(self.tab2, height=20)
@@ -120,9 +126,6 @@ class User:
         for user in result:
             full_name = ctk.CTkLabel(scroll_frame, fg_color='white', text_color='black', text=f'fullname : {user[0]} {user[1]}')
             full_name.grid(row=i, column=0, pady=1)
-            i += 1
-            date_of_membership = ctk.CTkLabel(scroll_frame, fg_color='white', text_color='black', text=f'membership date : {user[6]}\{user[8]}\{user[7]}')
-            date_of_membership.grid(row=i, column=0)
             i += 1
             end = ctk.CTkLabel(scroll_frame, fg_color='black', text_color='black', text=' ', width=280)
             end.grid(row=i, column=0)
