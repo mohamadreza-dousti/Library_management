@@ -1,8 +1,8 @@
 # Library_management
 
 manager=>
-    username=m-0123456789
-    password=m0123456789
+    username=m-{codemeli}
+    password=m{codemeli}
 
 
 admin=>
