@@ -1,19 +1,23 @@
-# Library_management
+# Library Management System
 
-manager=>
-    username=m-{codemeli}
-    password=m{codemeli}
+A desktop library management system built with **Python** and **CustomTkinter**.
 
+The system allows users to browse available books, reserve books online, and request delivery through a courier.
 
-admin=>
-    username=a-{codemeli}
-    password=a{codemeli}
+## Features
 
-user=>
-    username=u-{codemeli}
-    password=u{codemeli}
+*  Book management
+*  Search and browse books
+*  Online book reservation
+*  User management
+*  Reservation management
+*  Database 
+*  Desktop GUI built with CustomTkinter
 
-post=>
-    username=p-{codemeli}
-    password=p{codemeli}
+## Technologies
+
+* Python
+* CustomTkinter
+* MySQL
+
 
