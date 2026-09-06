@@ -2,7 +2,7 @@
 
 A desktop library management system built with **Python** and **CustomTkinter**.
 
-The system allows users to browse available books, reserve books online, and request delivery through a courier.
+The system allows users to browse available books, reserve books online.
 
 ## Features
 
